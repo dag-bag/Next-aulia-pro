@@ -169,6 +169,7 @@ function MyApp({ Component, pageProps }) {
     const respData = await resp.json();
 
     const { token, success, msg, name } = respData;
+    console.log(respData);
 
     if (success) {
       let cookie = getCookie("auth_token");

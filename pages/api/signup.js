@@ -11,7 +11,6 @@ const handler = async (req, res) => {
   if (req.method === "POST") {
     let user = await User.findOne({ email: req.body.email });
     // if (user) {
-    //   console.log("Exist");
     //   return res
     //     .status(400)
     //     .json({ msg: "This user is already exist", success: false });
@@ -29,6 +28,9 @@ const handler = async (req, res) => {
     // let Euser = await User.findOne({ email: newUser. });
     const userID = {
       id: savedUser._id,
+      email: email,
+      name: name,
+      verified: savedUser.verification,
     };
 
     // console.log(Euser);
@@ -198,7 +200,7 @@ const handler = async (req, res) => {
                                               <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='border-collapse:separate;line-height:100%;'>
                                                 <tr>
                                                   <td align='center' bgcolor='#ff6f6f' role='presentation' style='background-color:#ff6f6f;border:none;border-radius:5px;cursor:auto;padding:10px 25px;' valign='middle'>
-                                                    <a href='http://localhost:3000/verification/${userID.id}' style='background:#ff6f6f;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;' target='_blank'>
+                                                    <a href='http://localhost:3000/verification/${token}' style='background:#ff6f6f;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;' target='_blank'>
                                                       Verify Here
                                                     </a>
                                                   </td>

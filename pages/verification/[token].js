@@ -5,53 +5,28 @@ import mongoose, { mongo } from "mongoose";
 import jwt from "jsonwebtoken";
 import { getCookie } from "cookies-next";
 
-const Token = ({ verified, Cookie }) => {
-  let cookie = getCookie("auth_token");
-  console.log(cookie);
-  var decoded = jwt.verify(cookie, "VIRENDERISAHACKERKABAAP");
-
-  // const router = useRouter();
-  // const { token } = router.query;
-  // let token = router.query.token
-
-  // const verification = async () => {
-  //   const resp = await fetch("/api/verification", {
-  //     method: "PUT", // or 'PUT'
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(token),
-  //   });
-
-  //   const respData = await resp.json();
-
-  //   const { token, success, msg, name } = respData;
-  //   if (success) {
-  //     setTimeout(() => {
-  //       router.push("/");
-  //     }, 1500);
-  //   }
-  //   console.log(respData);
-  // };
-  // useEffect(() => {
-  //   verification();
-  //   console.log("useefffect is running");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+const Token = ({ res }) => {
+  const router = useRouter();
+  // let token = router.query.token;
+  useEffect(() => {
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
+  }, []);
 
   return (
     <div>
       <section>
         <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 md:px-12 lg:px-24 lg:py-24">
           <div className="flex flex-col w-full mb-12 text-center">
-            {verified[0].success && (
+            {res[0].success && (
               <h1 className="max-w-5xl text-2xl font-bold leading-none tracking-tighter text-green-600 md:text-5xl lg:text-6xl lg:max-w-7xl">
-                {verified[0].msg}
+                {res[0].msg}
               </h1>
             )}
-            {!verified[0].success && (
+            {!res[0].success && (
               <h1 className="max-w-5xl text-2xl font-bold leading-none tracking-tighter text-red-600 md:text-5xl lg:text-6xl lg:max-w-7xl">
-                {verified[0].msg}
+                {res[0].msg}
               </h1>
             )}
             <p className="max-w-xl mx-auto mt-8 text-base leading-relaxed text-center text-gray-500">
@@ -71,25 +46,41 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     mongoose.connect(process.env.MONGO);
   }
-
-  let verified = [];
-
+  let response = [];
   try {
-    let user = await User.findByIdAndUpdate(context.query.token, {
-      verification: true,
-    });
-    if (user) {
-      verified.push({ msg: "User is Verified", success: true });
-    }
-
-    if (!user) {
-      verified.push({ msg: "User is not Verified", success: false });
-    }
+    var data = jwt.verify(context.query.token, process.env.NEXT_PUBLIC_SECRET);
   } catch (error) {
-    verified.push({ msg: "User is not Verified", success: false });
+    response.push({
+      success: false,
+      msg: "User is not Verified successfully",
+    });
   }
 
+  if (data) {
+    console.log(data);
+    if (data.verified === false) {
+      let updateUser = await User.findOneAndUpdate(
+        { email: data.email },
+        {
+          verification: true,
+        }
+      );
+      response.push({ success: true, msg: "User Verified successfully" });
+    } else if (data.verified === true) {
+      response.push({
+        success: true,
+        msg: "User Already Verified successfully",
+      });
+    } else {
+      response.push({
+        success: false,
+        msg: "User is not Verified successfully",
+      });
+    }
+  }
+  // const resp = await fetch("http://localhost:3000/api/getproducts");
+  // const products = await resp.json();
   return {
-    props: { verified }, // will be passed to the page component as props
+    props: { res: response }, // will be passed to the page component as props
   };
 }

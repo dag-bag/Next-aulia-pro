@@ -11,7 +11,9 @@ let mkey = "b2hxQWZCw0AMt1Qc";
 const handler = async (req, res) => {
   if (req.method === "POST") {
     var paytmParams = {};
+    console.log(req.body);
     let body = req.body;
+
     let order = await new Order({
       orderId: body.orderid,
       name: body.name,
@@ -21,7 +23,7 @@ const handler = async (req, res) => {
       address: body.address,
       total: body.amount,
     });
-    order.save();
+    await order.save();
 
     paytmParams.body = {
       requestType: "Payment",

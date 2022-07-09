@@ -12,7 +12,9 @@ const handler = async (req, res) => {
     let user = await User.findOne({ email: email });
     if (!user) {
       let success = false;
-      return res.status(404).send({ error: "user not exist", success });
+      return res
+        .status(404)
+        .send({ error: "user not exist", success, msg: "User Not Exist" });
     }
     if (user) {
       const passCompare = await bcrypt.compare(password, user.password);
@@ -32,6 +34,7 @@ const handler = async (req, res) => {
 
       const userID = {
         id: user.id,
+        email: email,
       };
       var token = jwt.sign(userID, process.env.SECRET);
       setCookies("auth_token", token, { req, res });
