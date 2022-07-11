@@ -7,6 +7,7 @@ var nodemailer = require("nodemailer");
 require("dotenv").config();
 var jwt = require("jsonwebtoken");
 import { setCookies } from "cookies-next";
+let a = 0;
 const handler = async (req, res) => {
   if (req.method === "POST") {
     let user = await User.findOne({ email: req.body.email });
