@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 import { RiMenu3Fill } from "react-icons/ri";
+
+import { MdAccountCircle } from "react-icons/md";
 import { FiShoppingCart } from "react-icons/fi";
 import { BiUserCircle, BiSearchAlt } from "react-icons/bi";
 
-export default function Header({ Cart }) {
+export default function Header({ Cart, Cookie, logout }) {
+  const [Dropdown, setDropdown] = useState(false);
+
   let items = 0;
   const itemArray = Object.values(Cart);
 
@@ -85,6 +89,7 @@ export default function Header({ Cart }) {
               width={50}
               height={50}
             /> */}
+
             <Link href={"/"}>
               {/* <FaReact className="text-orange-400 text-2xl" /> */}
 
@@ -135,11 +140,122 @@ export default function Header({ Cart }) {
               <span className="relative">Login</span>
             </button> */}
             {/* <Btn txt="login" path="/login" /> */}
-            <Link href={"/login"}>
-              <span className="md:py-2 md:px-4 py-1 px-2 rounded-md hover:shadow-md ">
+
+            {!Cookie.value && (
+              <Link href={"/login"}>
+                <a>
+                  <button className="bg-orange-600 text-white rounded-xl px-2 py-1">
+                    Login
+                  </button>
+                </a>
+              </Link>
+            )}
+            {Cookie.value && (
+              <span
+                className="md:py-2 md:px-4 py-1 px-2 rounded-md hover:shadow-md relative z-50"
+                onMouseOver={() => {
+                  setDropdown(true);
+                }}
+                onMouseLeave={() => {
+                  setDropdown(false);
+                }}
+              >
                 <BiUserCircle className="md:text-3xl cursor-pointer text-3xl " />
+                {Dropdown && (
+                  <div className="absolute right-10 top-9">
+                    <ul
+                      className="
+          dropdown-menu
+          min-w-max
+          
+          z-[1000]
+          bg-white
+          text-base
+          
+          float-left
+          py-2
+          list-none
+          text-left
+          rounded-lg
+          shadow-lg
+          mt-1
+          
+          m-0
+          bg-clip-padding
+          border-none
+          px-4
+        "
+                      aria-labelledby="dropdownMenuButton2"
+                    >
+                      <li>
+                        <Link href={"/myaccount"}>
+                          <a
+                            className="
+              dropdown-item
+              text-sm
+              py-2
+              px-4
+              font-normal
+              block
+              w-full
+              whitespace-nowrap
+              bg-transparent
+              text-gray-700
+              hover:bg-gray-100
+            "
+                          >
+                            My Account
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={"/orders"} className="cursor-pointer">
+                          <a
+                            className="
+              dropdown-item
+              text-sm
+              py-2
+              px-4
+              font-normal
+              block
+              w-full
+              whitespace-nowrap
+              bg-transparent
+              text-gray-700
+              hover:bg-gray-100
+            "
+                          >
+                            Orders
+                          </a>
+                        </Link>
+                      </li>
+                      <li>
+                        <button
+                          className="
+              dropdown-item
+              text-sm
+              py-2
+              px-4
+              font-normal
+              block
+              w-full
+              text-left
+              whitespace-nowrap
+              bg-transparent
+              text-gray-700
+              hover:bg-gray-100
+            "
+                          onClick={logout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </span>
-            </Link>
+            )}
+
             <span className="md:py-2 md:px-4 py-1 px-2 rounded-md hover:shadow-md relative">
               <input
                 type="text"

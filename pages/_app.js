@@ -9,7 +9,7 @@ import Head from "next/head";
 import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
-  const [Cookie, setCookie] = useState();
+  const [Cookie, setCookie] = useState({ value: null });
   const [Key, setKey] = useState(0);
   const router = useRouter();
   useEffect(() => {
@@ -246,7 +246,7 @@ function MyApp({ Component, pageProps }) {
     }
  }); */}
 
-      <Header Cart={Cart} />
+      <Header Cart={Cart} Cookie={Cookie} logout={logout} />
       <Component
         Cookie={Cookie}
         auth={auth}

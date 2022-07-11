@@ -5,7 +5,10 @@ import Order from "../models/Order";
 
 export default function MyOrder({ order }) {
   let products = order.products;
-  console.log(order);
+  Object.keys(products).map((i) => {
+    console.log(products[i]._id);
+  });
+  console.log();
 
   let paytmresp = order.paymentInfo;
   let paytmInfo = JSON.parse(paytmresp);
@@ -87,35 +90,66 @@ export default function MyOrder({ order }) {
                 Your order has been successfully placed.
               </p>
               `
-              <div className="flex mb-4 text-center space-x-10">
-                <a className="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
-                  Description
-                </a>
-                <a className="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
-                  Quantity
-                </a>
-                <a className="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
-                  Total
-                </a>
-              </div>
-              {Object.keys(products).map((i) => {
-                return (
-                  <div
-                    key={products[i]._id}
-                    className="flex border-t border-gray-200 py-2"
-                  >
-                    <div className="w-48">
-                      <span className="text-gray-500">{products[i].name}</span>
-                    </div>
-                    <div className="flex justify-center items-center w-52">
-                      <span className=" text-gray-900">{products[i].qty}</span>
-                    </div>
-                    <span className="ml-auto text-gray-900">
-                      {products[i].price}
-                    </span>
-                  </div>
-                );
-              })}
+              <div className="container max-w-4xl">
+                <div className="flex mt-10 mb-5">
+                  <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
+                    Product Details
+                  </h3>
+                  <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
+                    Quantity
+                  </h3>
+                  <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
+                    Price
+                  </h3>
+                  <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">
+                    Total
+                  </h3>
+                </div>
+                <div className="Map">
+                  {Object.keys(products).map((k) => {
+                    return (
+                      <div
+                        className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
+                        key={k}
+                      >
+                        <div className="flex w-2/5">
+                          {/* <!-- product --> */}
+                          <div className="w-20 relative">
+                            <Image
+                              className="h-24 rounded-md"
+                              src={`${products[k].img}`}
+                              alt=""
+                              width={80}
+                              height={80}
+                              layout="fixed"
+                              objectFit="cover"
+                            />
+                          </div>
+                          <div className="flex flex-col justify-between ml-4 flex-grow">
+                            <span className="font-bold text-sm">
+                              {products[k].name}
+                            </span>
+                            <span className="text-red-500 text-xs">
+                              @Webkeen
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-center w-1/5">
+                          <span className="mx-2 border text-center w-8">
+                            {products[k].qty}
+                          </span>
+                        </div>
+                        <span className="text-center w-1/5 font-semibold text-sm">
+                          ${products[k].price}.00
+                        </span>
+                        <span className="text-center w-1/5 font-semibold text-sm">
+                          ${products[k].price * products[k].qty}.00
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>{" "}
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
                   SubTotal: ${order.total}
@@ -137,14 +171,7 @@ export default function MyOrder({ order }) {
                 </button>
               </div>
             </div>
-            <div className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded relative">
-              <Image
-                alt="ecommerce"
-                src="https://dummyimage.com/400x400"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
+            {/* <div className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded relative"></div> */}
           </div>
         </div>
       </section>

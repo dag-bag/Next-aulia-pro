@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Script from "next/script";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -26,7 +26,10 @@ export default function Checkout({
   // });
 
   const [Pay, setPay] = useState(true);
-  const onChange = (e) => {
+  const onChange = async (e) => {
+    const resp = await fetch("/api/pincode");
+    const PinJson = await resp.json();
+    console.log(PinJson);
     setForm({ ...Form, [e.target.name]: e.target.value });
 
     Object.keys(Form).forEach((i) => {
