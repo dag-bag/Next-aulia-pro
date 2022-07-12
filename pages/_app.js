@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import "../styles/globals.css";
+import jwt from "jsonwebtoken";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Footer from "../components/Footer";
@@ -158,6 +159,9 @@ function MyApp({ Component, pageProps }) {
   //   const respData = await resp.json();
   //   setTshirt(respData);
   // };
+  // Verified or not
+  const [Verified, setVerified] = useState(null);
+
   const auth = async (ep, path, Rpath) => {
     const resp = await fetch(`/api/${path}`, {
       method: "POST", // or 'PUT'
@@ -168,8 +172,16 @@ function MyApp({ Component, pageProps }) {
     });
     const respData = await resp.json();
 
-    const { token, success, msg, name } = respData;
     console.log(respData);
+    const { token, success, msg, verified } = respData;
+    if (token) {
+      let data = jwt.verify(token, process.env.NEXT_PUBLIC_SECRET);
+      setVerified(data.verified);
+    }
+
+    if (!token) {
+      setVerified(verified);
+    }
 
     if (success) {
       let cookie = getCookie("auth_token");
@@ -248,6 +260,7 @@ function MyApp({ Component, pageProps }) {
 
       <Header Cart={Cart} Cookie={Cookie} logout={logout} />
       <Component
+        Verified={Verified}
         Cookie={Cookie}
         auth={auth}
         addToCart={addToCart}

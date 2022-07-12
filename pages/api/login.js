@@ -28,7 +28,8 @@ const handler = async (req, res) => {
         return res.status(404).send({
           error: "User is not authenticate",
           success: false,
-          msg: "User is not authenticate",
+          msg: "Please Verify the email",
+          verified: false,
         });
       }
 

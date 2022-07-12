@@ -43,10 +43,10 @@ const handler = async (req, res) => {
 
     try {
       var transporter = nodemailer.createTransport({
-        service: "hotmail",
+        service: "gmail",
         auth: {
-          user: "testwebkeen@hotmail.com",
-          pass: "qwer1234@P+",
+          user: "testpubg3424342@gmail.com",
+          pass: "tcdvfyjybxohflib",
         },
       });
 

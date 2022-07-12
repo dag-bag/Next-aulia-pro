@@ -188,7 +188,7 @@ export default function Header({ Cart, Cookie, logout }) {
                       aria-labelledby="dropdownMenuButton2"
                     >
                       <li>
-                        <Link href={"/myaccount"}>
+                        <Link href={"/account"}>
                           <a
                             className="
               dropdown-item

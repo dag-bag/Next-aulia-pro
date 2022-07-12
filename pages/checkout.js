@@ -26,12 +26,18 @@ export default function Checkout({
   // });
 
   const [Pay, setPay] = useState(true);
-  const onChange = async (e) => {
+  const [State, setState] = useState();
+  const [Pin, setPin] = useState();
+  const stateChange = async (e) => {
     const resp = await fetch("/api/pincode");
     const PinJson = await resp.json();
-    console.log(PinJson);
-    setForm({ ...Form, [e.target.name]: e.target.value });
+    setPin(e.target.value);
 
+    if (Object.keys(PinJson).includes(Pin)) {
+      console.log("Yes I got IT");
+    }
+  };
+  const onChange = (e) => {
     Object.keys(Form).forEach((i) => {
       if (Form[i].length > 4) {
         setPay(false);
@@ -206,20 +212,6 @@ export default function Checkout({
                   </div>
                 </div>
                 <div className="space-x-0 lg:flex lg:space-x-4">
-                  <div className="w-full lg:w-1/2">
-                    <label
-                      htmlFor="city"
-                      className="block mb-3 text-sm font-semibold text-gray-500"
-                    >
-                      City
-                    </label>
-                    <input
-                      name="city"
-                      type="text"
-                      placeholder="City"
-                      className="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600"
-                    />
-                  </div>
                   <div className="w-full lg:w-1/2 ">
                     <label
                       htmlFor="postcode"
@@ -231,6 +223,21 @@ export default function Checkout({
                       name="postcode"
                       type="text"
                       placeholder="Post Code"
+                      className="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600"
+                      onChange={stateChange}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/2">
+                    <label
+                      htmlFor="city"
+                      className="block mb-3 text-sm font-semibold text-gray-500"
+                    >
+                      City
+                    </label>
+                    <input
+                      name="city"
+                      type="text"
+                      placeholder="City"
                       className="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600"
                     />
                   </div>
